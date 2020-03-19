@@ -2,3 +2,6 @@
 *
 !*/
 !*.*
+
+# output files
+*.output
