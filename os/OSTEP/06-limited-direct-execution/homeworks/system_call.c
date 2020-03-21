@@ -7,7 +7,7 @@
 #include <fcntl.h>
 
 
-#define ITERATION_COUNT 10000
+#define ITERATION_COUNT 100000
 
 int main(int argc, char *argv[]) {
     struct timeval t;
@@ -22,7 +22,7 @@ int main(int argc, char *argv[]) {
     gettimeofday(&t, NULL);
     dt = t.tv_usec - tu;
     assert(ts == t.tv_sec);
-    printf("Average delay for running an empty loop: %.4f total: %ld)\n", dt/(double) ITERATION_COUNT, dt);
+    printf("running an empty loop: %.4f\n", dt/(double) ITERATION_COUNT);
     
     sum = 0;
     for (int i = 0; i<ITERATION_COUNT; i++) {
@@ -30,7 +30,7 @@ int main(int argc, char *argv[]) {
         sum += t.tv_usec - tu;
         tu = t.tv_usec;
     }
-    printf("Average delay for getting time: %.4f total: %ld)\n", sum/(double)ITERATION_COUNT, sum);
+    printf("getting time: %.4f\n", sum/(double)ITERATION_COUNT);
     
     FILE *fp = fopen("XXX", "w");
     
@@ -42,19 +42,8 @@ int main(int argc, char *argv[]) {
     gettimeofday(&t, NULL);
     dt = t.tv_usec - tu;
     assert(ts == t.tv_sec);
-    printf("Average delay for writting empty string: %.4f total: %ld)\n", dt/(double)ITERATION_COUNT, dt);
+    printf("writting empty string: %.4f\n", dt/(double)ITERATION_COUNT);
 
-    tu = t.tv_usec;
-    ts = t.tv_sec;
-    for (int i = 0; i<ITERATION_COUNT; i++) {
-        fprintf(fp, "x");
-    }
-    gettimeofday(&t, NULL);
-    dt = t.tv_usec - tu;
-    assert(ts == t.tv_sec);
-    printf("Average delay for writting single character: %.4f total: %ld)\n", dt/(double)ITERATION_COUNT, dt);
-
-    
     int fd = open("yyy", O_WRONLY);
     char *buff;
     
@@ -66,6 +55,6 @@ int main(int argc, char *argv[]) {
     gettimeofday(&t, NULL);
     dt = t.tv_usec - tu;
     assert(ts == t.tv_sec);
-    printf("Average delay for writting empty string with `write`: %.4f total: %ld)\n",dt/(double)ITERATION_COUNT, dt);
+    printf("writting empty string with `write`: %.4f\n",dt/(double)ITERATION_COUNT);
     return 0;
 }
