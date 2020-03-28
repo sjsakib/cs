@@ -13,20 +13,18 @@ long get_dt(long s1, long u1, long s2, long u2) {
 int main(int argc, char **argv) {
     int pages = atoi(argv[1]);
     int jump = PAGESIZE / sizeof(int);
-    unsigned long long count = 0;
     struct timeval t;
     
     int *arr = malloc(sizeof(int)*pages*jump);
+    for(int i = 0; i< pages*jump; i+=jump)
+            arr[i] = 0;
 
     gettimeofday(&t, NULL);
     long tu = t.tv_usec;
     long ts = t.tv_sec;
-    for(int k = 0; k < LOOP; k++) {
-        for(int i = 0; i< pages*jump; i+=jump) {
+    for(int k = 0; k < LOOP; k++)
+        for(int i = 0; i< pages*jump; i+=jump)
             arr[i]+=1;
-            count++;
-        }
-    }
    
     gettimeofday(&t, NULL);
     printf("%lu\n", get_dt(ts, tu, t.tv_sec, t.tv_usec)/pages);

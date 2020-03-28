@@ -1,16 +1,15 @@
 #!/bin/bash
-# first hundred with precision 1
-for i in {1..100..1}
+echo "Pages, Accessing all of them 100000 times"
+
+i=1
+while [ $i -le 63 ]
 do
-    echo "$i, $(./tlb $i)";
+    echo "$i, $(./tlb $i)"
+    i=$(( $i + 1 ));
 done
 
-for i in {100..1000..10}
+while [ $i -le 65536 ]
 do
-    echo "$i, $(./tlb $i)";
-done
-
-for i in {1000..10000..1000}
-do
-    echo "$i, $(./tlb $i)";
+    echo "$i, $(./tlb $i)"
+    i=$(( $i * 2 ));
 done
