@@ -37,5 +37,5 @@ Initialization doesn't effect this implementation.
 
 # Notes
 
-- The first level TLB is about 3.5x faster than the second level TLB. And the second level TLB is about 2.5x faster that third level TLB or plain page table.
+- The first level TLB is about 3.5x faster than the second level TLB. And the second level TLB is about 2.5x faster that third level TLB (or plain page table).
 - In the graph, right before switching to third level TLB, there is a jump in performance, weird.
