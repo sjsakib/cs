@@ -37,5 +37,6 @@ Initialization doesn't effect this implementation.
 
 # Notes
 
+- The first level TLB can hold 8 entries. The second level TLB can hold about 4096 entries.
 - The first level TLB is about 3.5x faster than the second level TLB. And the second level TLB is about 2.5x faster that third level TLB (or plain page table).
 - In the graph, right before switching to third level TLB, there is a jump in performance, weird.
