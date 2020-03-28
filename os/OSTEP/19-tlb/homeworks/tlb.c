@@ -1,3 +1,5 @@
+#define _GNU_SOURCE
+#include <sched.h>
 #include <stdio.h>
 #include <time.h>
 #include <sys/time.h>
@@ -11,6 +13,12 @@ long get_dt(long s1, long u1, long s2, long u2) {
 }
 
 int main(int argc, char **argv) {
+    cpu_set_t mask;
+    CPU_ZERO(&mask);
+    CPU_SET(0, &mask);
+    sched_setaffinity(0, sizeof(mask), &mask);
+
+
     int pages = atoi(argv[1]);
     int jump = PAGESIZE / sizeof(int);
     struct timeval t;
