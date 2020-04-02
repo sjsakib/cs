@@ -1,4 +1,4 @@
-# Operating systems Three Easy Pieces: Chapter 20 solution
+# Operating systems Three Easy Pieces: Chapter 21 solution
 
 ## Question 1
 
