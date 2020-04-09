@@ -8,22 +8,45 @@
 //
 
 typedef struct __rwlock_t {
+    // sem_t readlock;
+    sem_t countlock;
+    sem_t writelock;
+
+    int readers;
 } rwlock_t;
 
 
 void rwlock_init(rwlock_t *rw) {
+    // Sem_init(&rw->readlock, 1);
+    Sem_init(&rw->writelock, 1);
+    Sem_init(&rw->countlock, 1);
+    rw->readers = 0;
 }
 
 void rwlock_acquire_readlock(rwlock_t *rw) {
+    Sem_wait(&rw->countlock);
+    if(rw->readers == 0) {
+        Sem_wait(&rw->writelock);
+    }
+    rw->readers++;
+    Sem_post(&rw->countlock);
 }
 
 void rwlock_release_readlock(rwlock_t *rw) {
+    Sem_wait(&rw->countlock);
+    if(rw->readers == 1) {
+        Sem_post(&rw->writelock);
+    }
+    rw->readers--;
+    Sem_post(&rw->countlock);
 }
 
 void rwlock_acquire_writelock(rwlock_t *rw) {
+    Sem_wait(&rw->writelock);
 }
 
 void rwlock_release_writelock(rwlock_t *rw) {
+    Sem_post(&rw->writelock);
 }
 
 //
