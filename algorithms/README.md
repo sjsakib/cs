@@ -1,0 +1,1 @@
+[Programming challenges](./the-algorithm-design-manual/programming-challenges/)
