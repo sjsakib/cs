@@ -22,3 +22,5 @@ with open(f'./{short_name}/README.md', 'w') as f:
         f'[Python solution](https://github.com/sjsakib/cs/blob/master/algorithms/the-algorithm-design-manual/programming-challenges/{short_name}/{short_name}.py)', file=f)
 
 open(f'./{short_name}/{short_name}.py', 'w').close()
+
+os.system(f'code ./{short_name}/{short_name}.py')
