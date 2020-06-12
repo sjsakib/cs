@@ -1,7 +1,9 @@
-# Chapter 1: Introduction to Algorithm Design
+# Programming Challenges
 
-## [UVa 100 - The 3n + 1 problem](https://github.com/sjsakib/cs/blob/master/algorithms/the-algorithm-design-manual/programming-challenges/uva100.py)
+## Chapter 1: Introduction to Algorithm Design
 
-## [10137 - The Trip](https://github.com/sjsakib/cs/blob/master/algorithms/the-algorithm-design-manual/programming-challenges/uva10137.py)
+* [UVa 100 - The 3n + 1 problem](./uva100)
 
-## [10142 - Australian Voting](https://github.com/sjsakib/cs/blob/master/algorithms/the-algorithm-design-manual/programming-challenges/uva10142.py)
+* [UVa 10137 - The Trip](./uva10137)
+
+* [UVa 10142 - Australian Voting](./uva10142)
