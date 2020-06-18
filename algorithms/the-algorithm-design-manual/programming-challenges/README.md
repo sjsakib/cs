@@ -7,3 +7,9 @@
 * [UVa 10137 - The Trip](./uva10137)
 
 * [UVa 10142 - Australian Voting](./uva10142)
+
+# Chapter 2: Algorithm Analysis
+
+* [UVa 10035 - Primary Arithmetic](./uva10035)
+
+* [UVa 847 - A Multiplication Game](./uva847)
