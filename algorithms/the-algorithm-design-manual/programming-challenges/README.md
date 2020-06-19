@@ -8,7 +8,7 @@
 
 * [UVa 10142 - Australian Voting](./uva10142)
 
-# Chapter 2: Algorithm Analysis
+## Chapter 2: Algorithm Analysis
 
 * [UVa 10035 - Primary Arithmetic](./uva10035)
 
