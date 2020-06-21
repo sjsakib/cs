@@ -13,3 +13,5 @@
 * [UVa 10035 - Primary Arithmetic](./uva10035)
 
 * [UVa 847 - A Multiplication Game](./uva847)
+
+* [UVa 10110 - Light, more light](./uva10110)
