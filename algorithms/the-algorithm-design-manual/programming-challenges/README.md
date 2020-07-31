@@ -15,3 +15,5 @@
 * [UVa 847 - A Multiplication Game](./uva847)
 
 * [UVa 10110 - Light, more light](./uva10110)
+
+* [UVa 10038 - Jolly Jumpers](./uva10038)
