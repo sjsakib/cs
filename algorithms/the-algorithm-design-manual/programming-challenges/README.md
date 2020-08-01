@@ -19,3 +19,5 @@
 * [UVa 10038 - Jolly Jumpers](./uva10038)
 
 * [UVa 843 - Crypt Kicker](./uva843)
+
+* [UVa 850 - Crypt Kicker II](./uva850)
