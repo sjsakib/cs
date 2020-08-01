@@ -17,3 +17,5 @@
 * [UVa 10110 - Light, more light](./uva10110)
 
 * [UVa 10038 - Jolly Jumpers](./uva10038)
+
+* [UVa 843 - Crypt Kicker](./uva843)
