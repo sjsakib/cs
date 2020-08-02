@@ -21,3 +21,5 @@
 * [UVa 843 - Crypt Kicker](./uva843)
 
 * [UVa 850 - Crypt Kicker II](./uva850)
+
+* [UVa 10010 - Where's Waldorf?](./uva10010)
