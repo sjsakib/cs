@@ -16,6 +16,8 @@
 
 * [UVa 10110 - Light, more light](./uva10110)
 
+## Chapter 3: Data Structures
+
 * [UVa 10038 - Jolly Jumpers](./uva10038)
 
 * [UVa 843 - Crypt Kicker](./uva843)
@@ -23,3 +25,7 @@
 * [UVa 850 - Crypt Kicker II](./uva850)
 
 * [UVa 10010 - Where's Waldorf?](./uva10010)
+
+## Chapter 4: Sorting and Searching
+
+* [UVa 10041 - Vito's Family](./uva10041)
