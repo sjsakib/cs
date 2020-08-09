@@ -29,3 +29,5 @@
 ## Chapter 4: Sorting and Searching
 
 * [UVa 10041 - Vito's Family](./uva10041)
+
+* [UVa 120 - Stacks of Flapjacks](./uva120)
