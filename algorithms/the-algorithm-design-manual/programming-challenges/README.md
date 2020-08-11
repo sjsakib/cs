@@ -34,3 +34,5 @@
 
 * [UVa 10037 - Bridge](./uva10037)
 
+
+* [UVa 10026 - Shoemaker's Problem](./uva10026)
