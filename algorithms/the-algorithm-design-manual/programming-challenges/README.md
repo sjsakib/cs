@@ -38,3 +38,5 @@
 * [UVa 10026 - Shoemaker's Problem](./uva10026)
 
 * [UVa 10152 - ShellSort](./uva10152)
+
+* [UVa 10004 - Bicoloring](./uva10004)
