@@ -36,3 +36,5 @@
 
 
 * [UVa 10026 - Shoemaker's Problem](./uva10026)
+
+* [UVa 10152 - ShellSort](./uva10152)
