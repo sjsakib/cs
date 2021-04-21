@@ -1,0 +1,48 @@
+print "Hello world!
+";
+
+fun sqrt(x) {
+    var res = x/2;
+
+    while (res*res - x > 0.00001) {
+        res = res - (res*res - x) / (2*res);
+    }
+
+    return res;
+}
+
+print "sqrt(99):";
+print sqrt(625);
+print "
+";
+
+fun modulo(x, y) {
+    while (x >= y) {
+        x = x - y;
+    }
+    return x;
+}
+print "module(5,2):";
+print modulo(5, 2);
+print "
+";
+
+fun isPrime(x) {
+    for (var i = 2; i < sqrt(x); i = i+1) {
+        if (modulo(x, i) == 0) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+print "isPrime(10):";
+print isPrime(10);
+print "
+";
+
+print "isPrime(67):";
+print isPrime(67);
+print "
+";
