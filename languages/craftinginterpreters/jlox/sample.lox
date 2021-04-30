@@ -1,0 +1,9 @@
+// this is single line comment
+
+/* this is a multiline comment
+/* nested */
+*/
+
+print "Hello World!";
+
+/* jkfds
