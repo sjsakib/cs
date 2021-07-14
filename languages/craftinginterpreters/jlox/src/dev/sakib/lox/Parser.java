@@ -1,8 +1,6 @@
 package dev.sakib.lox;
 
-import javax.swing.*;
 import java.util.List;
-import java.util.TreeMap;
 
 import static dev.sakib.lox.TokenType.*;
 
@@ -30,18 +28,18 @@ class Parser {
     }
 
     private Expr equality() {
-        Expr expr = comparision();
+        Expr expr = comparison();
 
         while (match(BANG_EQUAL, EQUAL_EQUAL)) {
             Token operator = previous();
-            Expr right = comparision();
+            Expr right = comparison();
             expr = new Expr.Binary(expr, operator, right);
         }
 
         return expr;
     }
 
-    private Expr comparision() {
+    private Expr comparison() {
         Expr expr = term();
 
         while (match(GREATER, GREATER_EQUAL, LESS, LESS_EQUAL)) {
