@@ -125,7 +125,13 @@ class Parser {
             return new Expr.Grouping(expr);
         }
 
-        throw error(peek(), "Expect expression.");
+        if (match(PLUS, MINUS, STAR, SLASH)) {
+            error(previous(), "Binary operator without a left hand operand");
+            term();
+        } else {
+            error(peek(), "Expect expression.");
+        }
+        return null;
     }
 
     private boolean match(TokenType... types) {
