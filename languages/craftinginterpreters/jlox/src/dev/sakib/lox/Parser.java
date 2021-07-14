@@ -28,7 +28,7 @@ class Parser {
     }
 
     private Expr comma() {
-        Expr expr = equality();
+        Expr expr = ternary();
 
         while (match(COMMA)) {
             Token operator = previous();
@@ -37,6 +37,20 @@ class Parser {
         }
 
         return expr;
+    }
+
+    private Expr ternary() {
+        Expr condition = equality();
+
+        if (match(QUESTION)) {
+            Expr left = ternary();
+            if (!match(COLON)) {
+                throw error(peek(), "Expect ':' after expression");
+            }
+            Expr right = ternary();
+            return new Expr.Ternary(condition, left, right);
+        }
+        return condition;
     }
 
     private Expr equality() {
