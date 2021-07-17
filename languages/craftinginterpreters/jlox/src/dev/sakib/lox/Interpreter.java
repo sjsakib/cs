@@ -41,17 +41,10 @@ class Interpreter implements Expr.Visitor<Object> {
 
         switch (expr.operator.type) {
             case GREATER:
-                checkNumberOperands(expr.operator, left, right);
-                return (double) left > (double) right;
             case GREATER_EQUAL:
-                checkNumberOperands(expr.operator, left, right);
-                return (double) left >= (double) right;
             case LESS:
-                checkNumberOperands(expr.operator, left, right);
-                return (double) left < (double) right;
             case LESS_EQUAL:
-                checkNumberOperands(expr.operator, left, right);
-                return (double) left <= (double) right;
+                return compare(expr.operator, left, right);
             case BANG_EQUAL:
                 return !isEqual(left, right);
             case EQUAL_EQUAL:
@@ -113,7 +106,7 @@ class Interpreter implements Expr.Visitor<Object> {
     private void checkNumberOperands(Token operator, Object left, Object right) {
         if (left instanceof Double && right instanceof Double) return;
 
-        throw new RuntimeError(operator, "Operands must be two numbers or two strings");
+        throw new RuntimeError(operator, "Operands must be two numbers");
     }
 
     private String stringify(Object object) {
@@ -128,5 +121,33 @@ class Interpreter implements Expr.Visitor<Object> {
         }
 
         return object.toString();
+    }
+
+    private boolean compare(Token operator, Object a, Object b) {
+        if (a instanceof String && b instanceof String) {
+            switch (operator.type) {
+                case GREATER:
+                    return ((String) a).compareTo((String) b) > 0;
+                case GREATER_EQUAL:
+                    return ((String) a).compareTo((String) b) >= 0;
+                case LESS:
+                    return ((String) a).compareTo((String) b) < 0;
+                case LESS_EQUAL:
+                    return ((String) a).compareTo((String) b) <= 0;
+            }
+        } else if (a instanceof Double && b instanceof Double) {
+            switch (operator.type) {
+                case GREATER:
+                    return (Double) a > (Double) b;
+                case GREATER_EQUAL:
+                    return (Double) a >= (Double) b;
+                case LESS:
+                    return (Double) a < (Double) b;
+                case LESS_EQUAL:
+                    return (Double) a <= (Double) b;
+            }
+        }
+
+        throw new RuntimeError(operator, "Operands must be two numbers or two strings");
     }
 }
