@@ -7,7 +7,7 @@ import java.util.List;
 public class GenerateAst {
     public static void main(String[] args) throws IOException {
         if (args.length != 1) {
-            System.err.println("Usage: generate_ast <output_directory");
+            System.err.println("Usage: generate_ast <output_directory>");
             System.exit(64);
         }
 
@@ -15,6 +15,7 @@ public class GenerateAst {
 
         String outputDir = args[0];
         defineAst(outputDir, "Expr", Arrays.asList(
+                "Ternary  : Expr condition, Expr left, Expr right",
                 "Binary   : Expr left, Token operator, Expr right",
                 "Grouping : Expr expression",
                 "Literal  : Object value",
