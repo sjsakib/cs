@@ -14,4 +14,23 @@
 
 // 1 + 2 == 4 ? "true" : 0 / 0
 
-10/0
+// 10/0
+
+if (10 > 20 and 10 / 0) {
+print "greater";
+} else {
+print "smaller";
+}
+
+
+var i = 1;
+
+print i;
+
+while (i <= 100) {
+print "hello world";
+
+print i;
+
+i = i + 1;
+}
