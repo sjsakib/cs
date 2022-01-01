@@ -1,9 +1,44 @@
 package dev.sakib.lox;
 
-import java.util.ArrayList;
-import java.util.List;
+import static dev.sakib.lox.TokenType.AND;
+import static dev.sakib.lox.TokenType.BANG;
+import static dev.sakib.lox.TokenType.BANG_EQUAL;
+import static dev.sakib.lox.TokenType.COLON;
+import static dev.sakib.lox.TokenType.COMMA;
+import static dev.sakib.lox.TokenType.ELSE;
+import static dev.sakib.lox.TokenType.EOF;
+import static dev.sakib.lox.TokenType.EQUAL;
+import static dev.sakib.lox.TokenType.EQUAL_EQUAL;
+import static dev.sakib.lox.TokenType.FALSE;
+import static dev.sakib.lox.TokenType.FOR;
+import static dev.sakib.lox.TokenType.GREATER;
+import static dev.sakib.lox.TokenType.GREATER_EQUAL;
+import static dev.sakib.lox.TokenType.IDENTIFIER;
+import static dev.sakib.lox.TokenType.IF;
+import static dev.sakib.lox.TokenType.LEFT_BRACE;
+import static dev.sakib.lox.TokenType.LEFT_PAREN;
+import static dev.sakib.lox.TokenType.LESS;
+import static dev.sakib.lox.TokenType.LESS_EQUAL;
+import static dev.sakib.lox.TokenType.MINUS;
+import static dev.sakib.lox.TokenType.NIL;
+import static dev.sakib.lox.TokenType.NUMBER;
+import static dev.sakib.lox.TokenType.OR;
+import static dev.sakib.lox.TokenType.PLUS;
+import static dev.sakib.lox.TokenType.PRINT;
+import static dev.sakib.lox.TokenType.QUESTION;
+import static dev.sakib.lox.TokenType.RIGHT_BRACE;
+import static dev.sakib.lox.TokenType.RIGHT_PAREN;
+import static dev.sakib.lox.TokenType.SEMICOLON;
+import static dev.sakib.lox.TokenType.SLASH;
+import static dev.sakib.lox.TokenType.STAR;
+import static dev.sakib.lox.TokenType.STRING;
+import static dev.sakib.lox.TokenType.TRUE;
+import static dev.sakib.lox.TokenType.VAR;
+import static dev.sakib.lox.TokenType.WHILE;
 
-import static dev.sakib.lox.TokenType.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 class Parser {
     private static class ParseError extends RuntimeException {
@@ -41,12 +76,53 @@ class Parser {
     }
 
     private Stmt statement() {
+        if (match(FOR)) return forStatement();
         if (match(IF)) return ifStatement();
         if (match(PRINT)) return printStatement();
         if (match(WHILE)) return whileStatement();
         if (match(LEFT_BRACE)) return new Stmt.Block(block());
 
         return expressionStatement();
+    }
+
+    private Stmt forStatement() {
+        consume(LEFT_PAREN, "Expect '(' after for.");
+
+        Stmt initializer;
+        if (match(SEMICOLON)) {
+            initializer = null;
+        } else if (match(VAR)) {
+            initializer = varDeclaration();
+        } else {
+            initializer = expressionStatement();
+        }
+
+        Expr condition = null;
+        if (!check(SEMICOLON)) {
+            condition = expression();
+        }
+        consume(SEMICOLON, "Expect ';' after loop condition");
+
+        Expr increment = null;
+        if (!check(RIGHT_PAREN)) {
+            increment = expression();
+        }
+        consume(RIGHT_PAREN, "Expect ')' after for clauses.");
+
+        Stmt body = statement();
+
+        if (increment != null) {
+            body = new Stmt.Block(Arrays.asList(body, new Stmt.Expression(increment)));
+        }
+
+        if (condition == null) condition = new Expr.Literal(true);
+        body = new Stmt.While(condition, body);
+
+        if (increment != null) {
+            body = new Stmt.Block(Arrays.asList(initializer, body));
+        }
+
+        return body;
     }
 
     private Stmt ifStatement() {
