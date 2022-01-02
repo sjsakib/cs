@@ -3,8 +3,10 @@ package dev.sakib.lox;
 import static dev.sakib.lox.TokenType.AND;
 import static dev.sakib.lox.TokenType.BANG;
 import static dev.sakib.lox.TokenType.BANG_EQUAL;
+import static dev.sakib.lox.TokenType.BREAK;
 import static dev.sakib.lox.TokenType.COLON;
 import static dev.sakib.lox.TokenType.COMMA;
+import static dev.sakib.lox.TokenType.CONTINUE;
 import static dev.sakib.lox.TokenType.ELSE;
 import static dev.sakib.lox.TokenType.EOF;
 import static dev.sakib.lox.TokenType.EQUAL;
@@ -46,6 +48,7 @@ class Parser {
 
     private final List<Token> tokens;
     private int current = 0;
+    private boolean insideLoop = false;
 
     Parser(List<Token> tokens) {
         this.tokens = tokens;
@@ -76,6 +79,8 @@ class Parser {
     }
 
     private Stmt statement() {
+        if (match(CONTINUE)) return continueStatement();
+        if (match(BREAK)) return breakStatement();
         if (match(FOR)) return forStatement();
         if (match(IF)) return ifStatement();
         if (match(PRINT)) return printStatement();
@@ -83,6 +88,22 @@ class Parser {
         if (match(LEFT_BRACE)) return new Stmt.Block(block());
 
         return expressionStatement();
+    }
+
+    private Stmt continueStatement() {
+        if (!insideLoop) {
+            throw  error(previous(), "continue not allowed outside loops");
+        }
+        consume(SEMICOLON, "Expect ';' after continue.");
+        return new Stmt.Continue();
+    }
+
+    private Stmt breakStatement() {
+        if (!insideLoop) {
+            throw  error(previous(), "break not allowed outside loops");
+        }
+        consume(SEMICOLON, "Expect ';' after break.");
+        return new Stmt.Break();
     }
 
     private Stmt forStatement() {
@@ -109,14 +130,16 @@ class Parser {
         }
         consume(RIGHT_PAREN, "Expect ')' after for clauses.");
 
+        insideLoop = true;
         Stmt body = statement();
+        insideLoop = false;
 
         if (increment != null) {
             body = new Stmt.Block(Arrays.asList(body, new Stmt.Expression(increment)));
         }
 
         if (condition == null) condition = new Expr.Literal(true);
-        body = new Stmt.While(condition, body);
+        body = new Stmt.While(condition, body, true);
 
         if (increment != null) {
             body = new Stmt.Block(Arrays.asList(initializer, body));
@@ -162,9 +185,11 @@ class Parser {
         consume(LEFT_PAREN, "Expect '(' after 'while'");
         Expr condition = expression();
         consume(RIGHT_PAREN, "Expect ')' after condition");
+        insideLoop = true;
         Stmt body = statement();
+        insideLoop = false;
 
-        return new Stmt.While(condition, body);
+        return new Stmt.While(condition, body, false);
 
     }
 

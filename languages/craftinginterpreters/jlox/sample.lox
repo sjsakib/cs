@@ -16,31 +16,55 @@
 
 // 10/0
 
-if (10 > 20 and 10 / 0) {
-print "greater";
-} else {
-print "smaller";
+// if (10 > 20 and 10 / 0) {
+// print "greater";
+// } else {
+// print "smaller";
+// }
+
+
+// var i = 1;
+
+// print i;
+
+// while (i <= 100) {
+// print "hello world";
+
+// print i;
+
+// i = i + 1;
+// }
+
+// var a = 0;
+// var temp;
+
+// for (var b = 1; a < 10000; b = temp + b) {
+// print a;
+// temp = a;
+// a = b;
+// }
+
+//var i = 0;
+
+// while (i < 100) {
+// print i;
+// if ( i == 50) {
+// {
+// print "hello";
+// }
+// break;
+// }
+// {
+// print "xxxx";
+// }
+// i = i + 1;
+// }
+
+for (var i = 0; i < 10; i = i+1) {
+
+if (i == 5) {
+ {continue;}
 }
-
-
-var i = 1;
-
 print i;
 
-while (i <= 100) {
-print "hello world";
-
-print i;
-
-i = i + 1;
 }
-
-var a = 0;
-var temp;
-
-for (var b = 1; a < 10000; b = temp + b) {
-print a;
-temp = a;
-a = b;
-}
-

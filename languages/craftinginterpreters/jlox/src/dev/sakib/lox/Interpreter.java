@@ -3,10 +3,13 @@ package dev.sakib.lox;
 import java.util.List;
 
 class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
+    private boolean breakLoop;
+    private boolean continueLoop;
     private Environment environment = new Environment();
+
     void interpret(List<Stmt> statements) {
         try {
-            for (Stmt statement: statements) {
+            for (Stmt statement : statements) {
                 execute(statement);
             }
         } catch (RuntimeError error) {
@@ -105,6 +108,7 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
     }
 
     private void execute(Stmt stmt) {
+        if (continueLoop || breakLoop) return;
         stmt.accept(this);
     }
 
@@ -112,6 +116,7 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
         try {
             this.environment = environment;
             for (Stmt stmt : statements) {
+                if (continueLoop) break;
                 execute(stmt);
             }
         } finally {
@@ -164,8 +169,31 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
     public Void visitWhileStmt(Stmt.While stmt) {
         while (isTruthy(evaluate(stmt.condition))) {
             execute(stmt.body);
-        }
+            if (continueLoop && stmt.isFor) {
+                List<Stmt> statements = ((Stmt.Block) stmt.body).statements;
+                continueLoop = false;
+                execute(statements.get(statements.size()-1));
+            }
+            continueLoop = false;
+            if (breakLoop) {
+                break;
+            }
 
+        }
+        breakLoop = false;
+
+        return null;
+    }
+
+    @Override
+    public Void visitBreakStmt(Stmt.Break stmt) {
+        breakLoop = true;
+        return null;
+    }
+
+    @Override
+    public Void visitContinueStmt(Stmt.Continue stmt) {
+        continueLoop = true;
         return null;
     }
 
