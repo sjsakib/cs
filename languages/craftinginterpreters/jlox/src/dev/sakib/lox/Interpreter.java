@@ -124,7 +124,7 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
             arguments.add(evaluate(argument));
         }
         if (!(calle instanceof LoxCallable)) {
-            throw new RuntimeError(expr.paren, "Can only functions and classes");
+            throw new RuntimeError(expr.paren, "Can only call functions and classes");
         }
 
         LoxCallable function = (LoxCallable) calle;
@@ -153,6 +153,7 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
     }
 
     void executeBlock(List<Stmt> statements, Environment environment) {
+        Environment previous = this.environment;
         try {
             this.environment = environment;
             for (Stmt stmt : statements) {
@@ -160,7 +161,7 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
                 execute(stmt);
             }
         } finally {
-            this.environment = environment.enclosing;
+            this.environment = previous;
         }
     }
 
@@ -177,13 +178,20 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
     }
 
     @Override
+    public Void visitFunctionStmt(Stmt.Function stmt) {
+        LoxFunction function = new LoxFunction(stmt);
+        environment.define(stmt.name.lexeme, function);
+        return null;
+    }
+
+    @Override
     public Void visitIfStmt(Stmt.If stmt) {
-      if (isTruthy(evaluate(stmt.condition))) {
-          execute(stmt.thenBranch);
-      } else if (stmt.elseBranch != null) {
-          execute(stmt.elseBranch);
-      }
-      return null;
+        if (isTruthy(evaluate(stmt.condition))) {
+            execute(stmt.thenBranch);
+        } else if (stmt.elseBranch != null) {
+            execute(stmt.elseBranch);
+        }
+        return null;
     }
 
     @Override
@@ -191,6 +199,14 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
         Object value = evaluate(stmt.expression);
         System.out.println(stringify(value));
         return null;
+    }
+
+    @Override
+    public Void visitReturnStmt(Stmt.Return stmt) {
+        Object value = null;
+        if (stmt.value != null) value = evaluate(stmt.value);
+
+        throw new Return(value);
     }
 
     @Override

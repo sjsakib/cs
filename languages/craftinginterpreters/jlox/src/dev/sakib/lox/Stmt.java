@@ -6,8 +6,15 @@ abstract class Stmt {
     interface Visitor<R> {
         R visitBlockStmt(Block stmt);
         R visitExpressionStmt(Expression stmt);
+
+        R visitFunctionStmt(Function stmt);
+
         R visitIfStmt(If stmt);
+
         R visitPrintStmt(Print stmt);
+
+        R visitReturnStmt(Return stmt);
+
         R visitWhileStmt(While stmt);
         R visitBreakStmt(Break stmt);
         R visitContinueStmt(Continue stmt);
@@ -39,6 +46,23 @@ abstract class Stmt {
         final Expr expression;
     }
 
+    static class Function extends Stmt {
+        Function(Token name, List<Token> params, List<Stmt> body) {
+            this.name = name;
+            this.params = params;
+            this.body = body;
+        }
+
+        @Override
+        <R> R accept(Visitor<R> visitor) {
+            return visitor.visitFunctionStmt(this);
+        }
+
+        final Token name;
+        final List<Token> params;
+        final List<Stmt> body;
+    }
+
     static class If extends Stmt {
         If(Expr condition, Stmt thenBranch, Stmt elseBranch) {
             this.condition = condition;
@@ -67,6 +91,21 @@ abstract class Stmt {
         }
 
         final Expr expression;
+    }
+
+    static class Return extends Stmt {
+        Return(Token keyword, Expr value) {
+            this.keyword = keyword;
+            this.value = value;
+        }
+
+        @Override
+        <R> R accept(Visitor<R> visitor) {
+            return visitor.visitReturnStmt(this);
+        }
+
+        final Token keyword;
+        final Expr value;
     }
 
     static class While extends Stmt {
