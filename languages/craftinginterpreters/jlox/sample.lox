@@ -73,18 +73,17 @@
 
 // print t - clock();
 
-fun x(nxx) {
-return nxx-1;
+fun genCounter(n) {
+var x = n;
+fun counter() {
+
+x = x + 1;
+return x + 1;
 }
 
-
-fun fib(n) {
-if (n <= 1) return n;
-return fib(n-2) + fib(n-1);
+return counter;
 }
 
-print fib(2);
-
-for(var i = 0; i< 20; i = i + 1) {
-print fib(i);
-}
+var c = genCounter(0);
+print c();
+print c();
