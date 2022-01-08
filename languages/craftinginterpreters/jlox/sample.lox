@@ -73,17 +73,10 @@
 
 // print t - clock();
 
-fun genCounter(n) {
-var x = n;
-fun counter() {
+(fun() {print "hello func";})();
 
-x = x + 1;
-return x + 1;
-}
+var x = 10;
 
-return counter;
-}
+var x = 20;
 
-var c = genCounter(0);
-print c();
-print c();
+print x;

@@ -6,15 +6,10 @@ abstract class Stmt {
     interface Visitor<R> {
         R visitBlockStmt(Block stmt);
         R visitExpressionStmt(Expression stmt);
-
         R visitFunctionStmt(Function stmt);
-
         R visitIfStmt(If stmt);
-
         R visitPrintStmt(Print stmt);
-
         R visitReturnStmt(Return stmt);
-
         R visitWhileStmt(While stmt);
         R visitBreakStmt(Break stmt);
         R visitContinueStmt(Continue stmt);
