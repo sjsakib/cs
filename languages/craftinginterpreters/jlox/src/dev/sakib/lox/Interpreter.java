@@ -1,16 +1,20 @@
 package dev.sakib.lox;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
     private boolean breakLoop;
     private boolean continueLoop;
     final Environment globals = new Environment();
     private Environment environment = globals;
+    private final Map<Expr, Integer> locals = new HashMap<>();
+    private final Map<Expr, Integer> localIndexes = new HashMap<>();
 
     Interpreter() {
-        globals.define("clock", new LoxCallable() {
+        globals.define(new LoxCallable() {
             @Override
             public int arity() {
                 return 0;
@@ -152,6 +156,11 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
         stmt.accept(this);
     }
 
+    void resolve(Expr expr, int depth, int index) {
+        locals.put(expr, depth);
+        localIndexes.put(expr, index);
+    }
+
     void executeBlock(List<Stmt> statements, Environment environment) {
         Environment previous = this.environment;
         try {
@@ -180,7 +189,7 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
     @Override
     public Void visitFunctionStmt(Stmt.Function stmt) {
         LoxFunction function = new LoxFunction(stmt, environment);
-        environment.define(stmt.name.lexeme, function);
+        environment.define(function);
         return null;
     }
 
@@ -216,7 +225,7 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
             value = evaluate(stmt.initializer);
         }
 
-        environment.define(stmt.name.lexeme, value);
+        environment.define(value);
 
         return null;
     }
@@ -262,14 +271,28 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
     public Object visitAssignExpr(Expr.Assign expr) {
         Object value = evaluate(expr.value);
 
-        environment.assign(expr.name, value);
+        Integer distance = locals.get(expr);
+        if (distance != null) {
+            environment.assignAt(distance, localIndexes.get(expr), value);
+        } else  {
+            globals.assign(localIndexes.get(expr), value);
+        }
 
         return value;
     }
 
     @Override
     public Object visitVariableExpr(Expr.Variable expression) {
-        return environment.get(expression.name);
+        return lookUpVariable(expression.name, expression);
+    }
+
+    private Object lookUpVariable(Token name, Expr expr) {
+        Integer distance = locals.get(expr);
+        if (distance != null) {
+            return environment.getAt(distance, localIndexes.get(expr));
+        } else {
+            return globals.get(localIndexes.get(expr));
+        }
     }
 
     private boolean isTruthy(Object object) {

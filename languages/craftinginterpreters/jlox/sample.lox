@@ -73,10 +73,25 @@
 
 // print t - clock();
 
-(fun() {print "hello func";})();
+// (fun() {print "hello func";})();
 
-var x = 10;
+// var x = 10;
 
 var x = 20;
 
 print x;
+
+print clock();
+
+fun counter() {
+var  x= 0;
+return fun() {
+x = x + 1;
+return x;
+};
+}
+
+var c = counter();
+
+print c();
+print c();

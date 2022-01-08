@@ -1,10 +1,11 @@
 package dev.sakib.lox;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 class Environment {
     final Environment enclosing;
-    private final HashMap<String, Object> values = new HashMap<>();
+    private final ArrayList<Object> values = new ArrayList<>();
 
     Environment() {
         enclosing = null;
@@ -14,31 +15,31 @@ class Environment {
         this.enclosing = enclosing;
     }
 
-    void define(String name, Object value) {
-        values.put(name, value);
+    void define(Object value) {
+        values.add(value);
     }
 
-    Object get(Token name) {
-        if (values.containsKey(name.lexeme)) {
-            return values.get(name.lexeme);
+    Environment ancestor(int distance) {
+        Environment environment = this;
+        for (int i = 0; i < distance; i++) {
+            environment = environment.enclosing;
         }
-
-        if (enclosing != null) return enclosing.get(name);
-
-        throw new RuntimeError(name, "Undefined variable '" + name.lexeme + "'.");
+        return environment;
     }
 
-    void  assign(Token name, Object value) {
-        if (values.containsKey(name.lexeme)) {
-            values.put(name.lexeme, value);
-            return;
-        }
+    Object getAt(int distance, Integer index) {
+        return ancestor(distance).values.get(index);
+    }
 
-        if (enclosing != null) {
-            enclosing.assign(name, value);
-            return;
-        }
+    void assignAt(int distance, Integer index, Object value) {
+        ancestor(distance).values.set(index, value);
+    }
 
-        throw new RuntimeError(name, "Undefined variable '" + name.lexeme + "'.");
+    void assign(Integer index, Object value) {
+        values.set(index, value);
+    }
+
+    Object get(int index) {
+        return values.get(index);
     }
 }
