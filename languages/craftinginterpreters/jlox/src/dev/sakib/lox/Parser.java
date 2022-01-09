@@ -4,6 +4,7 @@ import static dev.sakib.lox.TokenType.AND;
 import static dev.sakib.lox.TokenType.BANG;
 import static dev.sakib.lox.TokenType.BANG_EQUAL;
 import static dev.sakib.lox.TokenType.BREAK;
+import static dev.sakib.lox.TokenType.CLASS;
 import static dev.sakib.lox.TokenType.COLON;
 import static dev.sakib.lox.TokenType.COMMA;
 import static dev.sakib.lox.TokenType.CONTINUE;
@@ -71,6 +72,7 @@ class Parser {
 
     private Stmt declaration() {
         try {
+            if (match(CLASS)) return classDeclaration();
             if (match(FUN)) return function("function");
             if (match(VAR)) return varDeclaration();
 
@@ -79,6 +81,20 @@ class Parser {
             synchronize();
             return null;
         }
+    }
+
+    private Stmt classDeclaration() {
+        Token name = consume(IDENTIFIER, "Expect class name.");
+        consume(LEFT_BRACE, "Expect '{' before class body");
+
+        List<Stmt.Function> methods = new ArrayList<>();
+        while (!check(RIGHT_BRACE) && !isAtEnd()) {
+            methods.add(function("method"));
+        }
+
+        consume(RIGHT_BRACE, "Expect '}' after class body.");
+
+        return new Stmt.Class(name, methods);
     }
 
     private Stmt statement() {
