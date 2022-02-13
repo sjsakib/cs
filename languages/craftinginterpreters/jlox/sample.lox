@@ -95,3 +95,17 @@ var c = counter();
 
 print c();
 print c();
+
+
+class Klass {
+    hell() {
+        print("Hi");
+    }
+}
+
+x = Klass();
+print x;
+
+x.y = 10;
+
+print x.y + 10;

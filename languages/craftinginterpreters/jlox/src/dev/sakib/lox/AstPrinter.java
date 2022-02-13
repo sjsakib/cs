@@ -21,6 +21,16 @@ class AstPrinter implements Expr.Visitor<String> {
     }
 
     @Override
+    public String visitGetExpr(Expr.Get expr) {
+        return expr.object.toString() + '.' + expr.name;
+    }
+
+    @Override
+    public String visitSetExpr(Expr.Set expr) {
+        return "Set " + expr.object.toString() + '.' + expr.name + ": " + expr.value;
+    }
+
+    @Override
     public String visitGroupingExpr(Expr.Grouping expr) {
         return parenthesize("group", expr.expression);
     }

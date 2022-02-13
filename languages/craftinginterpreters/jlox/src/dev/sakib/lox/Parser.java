@@ -8,6 +8,7 @@ import static dev.sakib.lox.TokenType.CLASS;
 import static dev.sakib.lox.TokenType.COLON;
 import static dev.sakib.lox.TokenType.COMMA;
 import static dev.sakib.lox.TokenType.CONTINUE;
+import static dev.sakib.lox.TokenType.DOT;
 import static dev.sakib.lox.TokenType.ELSE;
 import static dev.sakib.lox.TokenType.EOF;
 import static dev.sakib.lox.TokenType.EQUAL;
@@ -67,7 +68,7 @@ class Parser {
     }
 
     private Expr expression(boolean allowComma) {
-        return allowComma?  comma() : assignment();
+        return allowComma ? comma() : assignment();
     }
 
     private Stmt declaration() {
@@ -124,7 +125,7 @@ class Parser {
 
     private Stmt continueStatement() {
         if (!insideLoop) {
-            throw  error(previous(), "continue not allowed outside loops");
+            throw error(previous(), "continue not allowed outside loops");
         }
         consume(SEMICOLON, "Expect ';' after continue.");
         return new Stmt.Continue();
@@ -132,7 +133,7 @@ class Parser {
 
     private Stmt breakStatement() {
         if (!insideLoop) {
-            throw  error(previous(), "break not allowed outside loops");
+            throw error(previous(), "break not allowed outside loops");
         }
         consume(SEMICOLON, "Expect ';' after break.");
         return new Stmt.Break();
@@ -273,6 +274,9 @@ class Parser {
             if (expr instanceof Expr.Variable) {
                 Token name = ((Expr.Variable) expr).name;
                 return new Expr.Assign(name, value);
+            } else if (expr instanceof Expr.Get) {
+                Expr.Get get = (Expr.Get) expr;
+                return new Expr.Set(get.object, get.name, value);
             }
 
             error(equals, "Invalid assignment target.");
@@ -287,7 +291,7 @@ class Parser {
         while (match(OR)) {
             Token operator = previous();
             Expr right = and();
-            expr = new  Expr.Logical(expr, operator, right);
+            expr = new Expr.Logical(expr, operator, right);
 
         }
 
@@ -303,7 +307,7 @@ class Parser {
             expr = new Expr.Logical(expr, operator, right);
         }
 
-        return  expr;
+        return expr;
     }
 
     private Expr comma() {
@@ -395,6 +399,9 @@ class Parser {
         while (true) {
             if (match(LEFT_PAREN)) {
                 expr = finishCall(expr);
+            } else if (match(DOT)) {
+                Token name = consume(IDENTIFIER, "Expect property name after '.'.");
+                expr = new Expr.Get(expr, name);
             } else {
                 break;
             }
