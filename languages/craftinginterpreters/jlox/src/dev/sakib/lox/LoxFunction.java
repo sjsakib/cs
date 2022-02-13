@@ -3,8 +3,8 @@ package dev.sakib.lox;
 import java.util.List;
 
 public class LoxFunction implements LoxCallable {
-    private  final List<Token> params;
-    private  final  List<Stmt> body;
+    private final List<Token> params;
+    private final List<Stmt> body;
     private final Token name;
     private final Environment closure;
 
@@ -20,6 +20,12 @@ public class LoxFunction implements LoxCallable {
         this.body = declaration.body;
         this.name = null;
         this.closure = closure;
+    }
+
+    LoxFunction bind(LoxInstance instance) {
+        Environment environment = new Environment(closure);
+        environment.define(instance);
+        return new LoxFunction(new Stmt.Function(this.name, this.params, this.body), environment);
     }
 
     @Override

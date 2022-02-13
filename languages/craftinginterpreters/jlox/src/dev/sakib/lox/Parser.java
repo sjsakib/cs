@@ -38,6 +38,7 @@ import static dev.sakib.lox.TokenType.SEMICOLON;
 import static dev.sakib.lox.TokenType.SLASH;
 import static dev.sakib.lox.TokenType.STAR;
 import static dev.sakib.lox.TokenType.STRING;
+import static dev.sakib.lox.TokenType.THIS;
 import static dev.sakib.lox.TokenType.TRUE;
 import static dev.sakib.lox.TokenType.VAR;
 import static dev.sakib.lox.TokenType.WHILE;
@@ -420,6 +421,8 @@ class Parser {
         if (match(NUMBER, STRING)) {
             return new Expr.Literal(previous().literal);
         }
+
+        if (match(THIS)) return new Expr.This(previous());
 
         if (match(IDENTIFIER)) {
             return new Expr.Variable(previous());

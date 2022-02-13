@@ -96,16 +96,27 @@ var c = counter();
 print c();
 print c();
 
+fun abs(x) {
+    if (x < 0) return -x;
+    return x;
+}
 
-class Klass {
-    hell() {
-        print("Hi");
+fun sqrt(x) {
+    var res = x;
+    while (abs(res*res - x) > 0.00000000001) {
+        res = res + (x - res*res)/(2*res);
+    }
+    return res;
+}
+
+class Vector {
+    mod() {
+        return sqrt(this.x*this.x + this.y*this.y);
     }
 }
 
-x = Klass();
-print x;
+var v = Vector();
+v.x = 20;
+v.y = 20;
 
-x.y = 10;
-
-print x.y + 10;
+print v.mod();
