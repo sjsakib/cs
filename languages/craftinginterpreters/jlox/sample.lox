@@ -110,13 +110,17 @@ fun sqrt(x) {
 }
 
 class Vector {
+    init(x, y) {
+        this.x = x;
+        this.y = y;
+    }
+
     mod() {
         return sqrt(this.x*this.x + this.y*this.y);
     }
 }
 
-var v = Vector();
-v.x = 20;
-v.y = 20;
+var v = Vector(10, 20);
+
 
 print v.mod();

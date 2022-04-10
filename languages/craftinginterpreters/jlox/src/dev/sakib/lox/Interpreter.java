@@ -52,7 +52,7 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
         Object left = evaluate(expr.left);
 
         if (expr.operator.type == TokenType.OR) {
-            if(isTruthy(left)) return left;
+            if (isTruthy(left)) return left;
         } else {
             if (!isTruthy(left)) return left;
         }
@@ -102,12 +102,12 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
                     return (double) left + (double) right;
                 }
                 if (left instanceof String || right instanceof String) {
-                    return  stringify(left) + stringify(right);
+                    return stringify(left) + stringify(right);
                 }
                 throw new RuntimeError(expr.operator, "Operands must be two numbers or at least one string");
             case SLASH:
                 checkNumberOperands(expr.operator, left, right);
-                if ((Double) right == 0)  {
+                if ((Double) right == 0) {
                     throw new RuntimeError(expr.operator, "Division by zero");
                 }
                 return (double) left / (double) right;
@@ -212,8 +212,8 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
     @Override
     public Void visitClassStmt(Stmt.Class stmt) {
         Map<String, LoxFunction> methods = new HashMap<>();
-        for (Stmt.Function method: stmt.methods) {
-            LoxFunction function = new LoxFunction(method, environment);
+        for (Stmt.Function method : stmt.methods) {
+            LoxFunction function = new LoxFunction(method, environment, method.name.lexeme.equals("init"));
             methods.put(method.name.lexeme, function);
         }
         LoxClass klass = new LoxClass(stmt.name.lexeme, methods);
@@ -229,7 +229,7 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
 
     @Override
     public Void visitFunctionStmt(Stmt.Function stmt) {
-        LoxFunction function = new LoxFunction(stmt, environment);
+        LoxFunction function = new LoxFunction(stmt, environment, false);
         environment.define(function);
         return null;
     }
@@ -278,7 +278,7 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
             if (continueLoop && stmt.isFor) {
                 List<Stmt> statements = ((Stmt.Block) stmt.body).statements;
                 continueLoop = false;
-                execute(statements.get(statements.size()-1));
+                execute(statements.get(statements.size() - 1));
             }
             continueLoop = false;
             if (breakLoop) {
@@ -315,7 +315,7 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
         Integer distance = locals.get(expr);
         if (distance != null) {
             environment.assignAt(distance, localIndexes.get(expr), value);
-        } else  {
+        } else {
             globals.assign(localIndexes.get(expr), value);
         }
 
