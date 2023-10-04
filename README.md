@@ -4,9 +4,9 @@ I decided to teach myself computer science. That's not a new decision of course.
 
 I am following the guide at [Teach Yourself CS](https://teachyourselfcs.com/)
 
-# OS
+## OS
 
-## Operating Systems: Three Easy Pieces
+### Operating Systems: Three Easy Pieces
 
 This one is really good resource. Wish I could find as as good material for all the CS topics I am about to try. The dialogues gives a feeling of connection to the author, makes one feel he is _actually_ directly teaching them.
 
@@ -14,9 +14,9 @@ Freely available at: [http://www.ostep.org](http://www.ostep.org/)
 
 [Homework solutions](./os/OSTEP/)
 
-# Algorithms
+## Algorithms
 
-## The Algorithm Design Manual
+### The Algorithm Design Manual
 
 I've started reading [The Algorithm Design Manual](http://www.algorist.com/)
 
