@@ -1,10 +1,3 @@
-theme: minima
+theme: jekyll-theme-minimal
 
 title: cs.sakib.dev
-
-minima:
-  skin: dark
-
-header_pages:
-  - algorithms/the-algorithm-design-manual/programming-challenges
-  - 'Operating Systems: Three Easy Pieces homework solutions'
