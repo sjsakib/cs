@@ -1,31 +1,13 @@
-nn = int(input())
+def result(jobs):
+  return ' '.join(str(x[1]) for x in sorted(jobs))
 
+jqs = []
+for _ in range(int(input())):
+  input()
+  jobs = []
+  for i in range(1, int(input()) + 1):
+    T, S = map(int, input().split())
+    jobs.append((T / S, i))
+  jqs.append(jobs)
 
-class Job:
-    def __init__(self, i, t, f):
-        self.i = i
-        self.t = t
-        self.f = f
-
-    def __lt__(self, other):
-        return self.f * other.t > self.t * other.f
-
-    def __str__(self):
-        return f'{self.i}'
-
-
-for ii in range(nn):
-    input()
-    if ii != 0:
-        print('')
-
-    n = int(input())
-
-    jobs = []
-
-    for i in range(n):
-        jobs.append(Job(i+1, *map(int, input().split())))
-
-    jobs.sort()
-
-    print(*jobs)
+print('\n\n'.join(result(jobs) for jobs in jqs))
